@@ -10,8 +10,8 @@ def create_tables():
         CREATE TABLE films (
             film_id SERIAL PRIMARY KEY,
             film_name VARCHAR(255) NOT NULL,
-            film_speed INTEGER NOT NULL,
-            film_format VARCHAR(50) NOT NULL
+            speed INTEGER NOT NULL,
+            format VARCHAR(50) NOT NULL
         )
         """,
         """ 
