@@ -1,0 +1,5 @@
+[postgresql]
+host=localhost
+database=arbus
+user=[db_user]
+password=[db_password]

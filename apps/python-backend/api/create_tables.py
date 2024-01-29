@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import psycopg2
-from api.config import config
+from config import config
 
 def create_tables():
     """ create tables in the PostgreSQL database"""
@@ -9,7 +9,7 @@ def create_tables():
         """
         CREATE TABLE films (
             film_id SERIAL PRIMARY KEY,
-            film_name VARCHAR(255) NOT NULL,
+            name VARCHAR(50) NOT NULL,
             speed INTEGER NOT NULL,
             format VARCHAR(50) NOT NULL
         )
