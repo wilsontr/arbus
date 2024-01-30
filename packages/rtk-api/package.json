@@ -1,5 +1,5 @@
 {
-  "name": "typescript-lib",
+  "name": "@arbus/rtk-api",
   "version": "0.0.1",
   "description": "",
   "main": "index.ts",

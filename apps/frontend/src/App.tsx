@@ -3,6 +3,8 @@ import { Counter } from "./features/counter/Counter"
 import { Quotes } from "./features/quotes/Quotes"
 import logo from "./logo.svg"
 
+import { Film } from "@arbus/rtk-api"
+
 const App = () => {
   return (
     <div className="App">
