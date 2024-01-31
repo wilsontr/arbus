@@ -2,6 +2,14 @@
 
 B&W film processing database using React/RTK/Vite/Python/Flask/PostgreSQL.
 
+This is a monorepo managed via pnpm.
+
+Structure:
+
+- `apps/frontend`: React/RTK client app served with Vite
+- `apps/backend`: Python/Flask/PostgreSQL backend
+- `packages/rtk-api`: Shared RTK Query API slices
+
 ## Setup (macOS)
 
 Clone this repo, then:
