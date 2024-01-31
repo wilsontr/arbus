@@ -59,6 +59,7 @@ def get_films():
             "SELECT film_id, name, speed, format FROM films ORDER BY film_id")
         return {"films": cur.fetchall(), "success": True}
     except (Exception, psycopg2.DatabaseError) as error:
+        print(Exception)
         app.logger.exception(Exception)
         abort(500)
     finally:
