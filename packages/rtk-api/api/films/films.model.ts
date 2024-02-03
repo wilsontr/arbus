@@ -6,5 +6,5 @@ export interface AddFilmResponse {
 }
 
 export interface GetFilmsApiResponse {
-  data?: Film[];
+  films?: Film[];
 }

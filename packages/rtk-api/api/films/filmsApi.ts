@@ -10,12 +10,14 @@ export const filmsApi = emptySplitApi.injectEndpoints({
         method: "POST",
       }),
     }),
-    getFilms: build.query<Film[] | undefined, void>({
+    getFilms: build.query<GetFilmsApiResponse| undefined, void>({
       query: () => ({
         url: "/api/films",
         method: "GET"
       }),
-      transformResponse: (response: GetFilmsApiResponse) => response,
+      transformResponse: (response: GetFilmsApiResponse) => ({ 
+        films: response.films?.map(film => ( {...film, id: film.film_id })),
+      })
     })
   }),
 })

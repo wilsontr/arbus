@@ -15,11 +15,16 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@arbus/rtk-api": "workspace:*",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/lab": "5.0.0-alpha.163",
+    "@mui/material": "^5.15.7",
+    "@mui/x-data-grid": "^6.19.3",
     "@reduxjs/toolkit": "^2.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-redux": "^9.1.0",
-    "@arbus/rtk-api": "workspace:*"
+    "react-redux": "^9.1.0"
   },
   "devDependencies": {
     "@testing-library/dom": "^9.3.4",
