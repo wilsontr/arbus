@@ -1,42 +1,79 @@
-import { DataGrid } from "@mui/x-data-grid";
-import { filmsApi } from "@arbus/rtk-api";
-import { filmsColumns } from "./Films.model";
+import { DataGrid, GridRowParams } from "@mui/x-data-grid";
+import { Film, filmsApi } from "@arbus/rtk-api";
+import { clickNoSelectionStyle, filmsColumns } from "./Films.model";
 import { Button, Grid } from "@mui/material";
 import { Add } from "@mui/icons-material";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { AddFilmForm } from "./addFilmForm";
 
-const { useGetFilmsQuery } = filmsApi;
+const { useGetFilmsQuery, useAddFilmMutation } = filmsApi;
 
 export const Films = () => {
-  const { data, isFetching } = useGetFilmsQuery();
+  const [showingAddFilmForm, setShowingAddFilmForm] = useState(false);
+  const { data, isFetching: isFilmsFetching } = useGetFilmsQuery();
+  const [
+    addFilm,
+    { isLoading: isAddFilmLoading, isSuccess: isAddFilmSuccess },
+  ] = useAddFilmMutation();
 
-  const handleAddButtonClick = useCallback(() => {}, []);
+  const handleAddButtonClick = useCallback(() => {
+    setShowingAddFilmForm(true);
+  }, [setShowingAddFilmForm]);
+
+  const handleAddFilmFormSubmit = useCallback(
+    (film: Film) => {
+      addFilm(film);
+    },
+    [addFilm],
+  );
+
+  const handleAddFilmFormCancel = useCallback(() => {
+    setShowingAddFilmForm(false);
+  }, [setShowingAddFilmForm]);
+
+  const handleRowClick = useCallback((params: GridRowParams) => {
+    console.log("click", params);
+  }, []);
+
+  useEffect(() => {
+    setShowingAddFilmForm(false);
+  }, [isAddFilmSuccess]);
 
   return (
     <>
       <DataGrid
         rows={data?.films || []}
         columns={filmsColumns}
-        loading={isFetching}
+        loading={isFilmsFetching}
         pagination={undefined}
+        rowSelection={false}
+        onRowClick={handleRowClick}
+        sx={clickNoSelectionStyle}
       />
-      <Grid
-        container
-        justifyContent="flex-end"
-        alignItems="flex-end"
-        flexDirection="row"
-        marginTop={1}
-      >
-        <Grid item alignItems="flex-end" spacing={2}>
+      {!showingAddFilmForm && (
+        <Grid
+          container
+          justifyContent="flex-end"
+          alignItems="flex-end"
+          flexDirection="row"
+          marginTop={1}
+        >
           <Button
             variant="contained"
             startIcon={<Add />}
             onClick={handleAddButtonClick}
+            fullWidth
           >
             Add new film
           </Button>
         </Grid>
-      </Grid>
+      )}
+      {showingAddFilmForm && (
+        <AddFilmForm
+          onSubmit={handleAddFilmFormSubmit}
+          onCancel={handleAddFilmFormCancel}
+        />
+      )}
     </>
   );
 };

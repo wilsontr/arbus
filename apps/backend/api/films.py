@@ -18,7 +18,7 @@ def insert_film():
         name = data.get('name')
         speed = data.get('speed')
         format = data.get('format')
-        sql = """INSERT INTO films(name, speed, format) VALUES(%s, %s, %s) RETURNING film_id;"""
+        sql = """INSERT INTO films(name, speed, format) VALUES(%s, %s, %s) RETURNING id;"""
         conn = None
         film_id = None
         try:
@@ -56,7 +56,7 @@ def get_films():
         conn = psycopg2.connect(**params)
         cur = conn.cursor(cursor_factory=RealDictCursor)
         cur.execute(
-            "SELECT film_id, name, speed, format FROM films ORDER BY film_id")
+            "SELECT id, name, speed, format FROM films ORDER BY id")
         return {"films": cur.fetchall(), "success": True}
     except (Exception, psycopg2.DatabaseError) as error:
         print(Exception)

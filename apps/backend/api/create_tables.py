@@ -8,7 +8,7 @@ def create_tables():
     commands = (
         """
         CREATE TABLE films (
-            film_id SERIAL PRIMARY KEY,
+            id SERIAL PRIMARY KEY,
             name VARCHAR(50) NOT NULL,
             speed INTEGER NOT NULL,
             format VARCHAR(50) NOT NULL
@@ -16,8 +16,8 @@ def create_tables():
         """,
         """ 
         CREATE TABLE developers (
-            developer_id SERIAL PRIMARY KEY,
-            developer_name VARCHAR(255) NOT NULL,
+            id SERIAL PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
             bottle_size_ml INTEGER
         )
         """,
@@ -33,10 +33,10 @@ def create_tables():
             film_id INTEGER,
             developer_id INTEGER,
             FOREIGN KEY (film_id)
-                REFERENCES films (film_id)
+                REFERENCES films (id)
                 ON UPDATE CASCADE ON DELETE CASCADE,
             FOREIGN KEY (developer_id)
-                REFERENCES developers (developer_id)
+                REFERENCES developers (id)
                 ON UPDATE CASCADE ON DELETE CASCADE      
         )          
         """)    

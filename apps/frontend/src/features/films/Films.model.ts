@@ -11,7 +11,7 @@ export const filmsColumns: GridColDef[] = [
     headerName: "Speed",
     type: "number",
     field: "speed",
-    width: 200,
+    width: 125,
   },
   {
     headerName: "Format",
@@ -22,3 +22,14 @@ export const filmsColumns: GridColDef[] = [
     headerAlign: "right",
   },
 ];
+
+export const clickNoSelectionStyle = {
+  // disable cell selection style
+  ".MuiDataGrid-cell:focus": {
+    outline: "none",
+  },
+  // pointer cursor on ALL rows
+  "& .MuiDataGrid-row:hover": {
+    cursor: "pointer",
+  },
+};

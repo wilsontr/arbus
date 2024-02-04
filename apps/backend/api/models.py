@@ -3,7 +3,7 @@ from app import db
 class Film(db.Model):
     """ Database model for B&W film """
     __tablename__ = 'films'
-    film_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     speed = db.Column(db.Integer)
     format = db.Column(db.String(50))
