@@ -72,6 +72,7 @@ export const Films = () => {
         <AddFilmForm
           onSubmit={handleAddFilmFormSubmit}
           onCancel={handleAddFilmFormCancel}
+          isButtonLoading={isAddFilmLoading}
         />
       )}
     </>

@@ -1,31 +1,14 @@
-import { useFormik } from "formik";
-import { Button, Grid, TextField } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { AddFilmFormProps } from "./AddFilmForm.model";
-import * as yup from "yup";
+import { LoadingButton } from "@mui/lab";
+import { useFilmForm } from "../filmForm/useFilmForm";
 
-const initialValues = {
-  name: "",
-  speed: "",
-  format: "",
-};
-
-const validationSchema = yup.object({
-  name: yup.string().required("Enter a name for this film"),
-  speed: yup.number().required("Enter an ASA/ISO speed for this film"),
-  format: yup.string().required("Enter a format for this film"),
-});
-
-export const AddFilmForm = ({ onSubmit, onCancel }: AddFilmFormProps) => {
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit: values =>
-      onSubmit({
-        name: values.name,
-        speed: parseInt(values.speed),
-        format: values.format,
-      }),
-  });
+export const AddFilmForm = ({
+  onSubmit,
+  onCancel,
+  isButtonLoading,
+}: AddFilmFormProps) => {
+  const { formik, fields } = useFilmForm({ onSubmit });
 
   return (
     <>
@@ -35,43 +18,19 @@ export const AddFilmForm = ({ onSubmit, onCancel }: AddFilmFormProps) => {
             <h3>Add film</h3>
           </Grid>
 
+          {fields}
+
           <Grid item>
-            <TextField
+            <LoadingButton
+              color="primary"
+              variant="contained"
               fullWidth
-              id="name"
-              name="name"
-              label="Name"
-              value={formik.values.name}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              fullWidth
-              id="speed"
-              name="speed"
-              label="Speed"
-              value={formik.values.speed}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-          </Grid>
-          <Grid item xs={24}>
-            <TextField
-              fullWidth
-              id="format"
-              name="format"
-              label="Format"
-              value={formik.values.format}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-          </Grid>
-          <Grid item>
-            <Button color="primary" variant="contained" fullWidth type="submit">
+              type="submit"
+              loading={isButtonLoading}
+              disabled={isButtonLoading}
+            >
               Add film
-            </Button>
+            </LoadingButton>
           </Grid>
           <Grid item>
             <Button
