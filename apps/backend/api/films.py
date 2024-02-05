@@ -47,6 +47,32 @@ def insert_film():
         return film_id
 
 
+@films.route('/api/film/<int:film_id>', methods=['PUT'])
+def update_film(film_id):
+    if request.is_json:
+        """update a film in the films table"""
+        data = request.json
+        name = data.get('name')
+        speed = data.get('speed')
+        format = data.get('format')
+        sql = """UPDATE films SET name = %s, speed = %s, format = %s WHERE id = %s;"""
+        conn = None
+        try: 
+            params = config()
+            conn = psycopg2.connect(**params)
+            cur = conn.cursor()
+            cur.execute(sql, (name, speed, format, film_id))
+            conn.commit()
+            cur.close()
+            return { "success": True }
+        except (Exception, psycopg2.DatabaseError) as error:
+            app.logger.exception(Exception)
+            abort(500)
+        finally:
+            if conn is not None:
+                conn.close();
+
+
 @films.route('/api/films', methods=['GET'])
 def get_films():
     """ query data from the films table """

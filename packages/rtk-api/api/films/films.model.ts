@@ -8,3 +8,7 @@ export interface AddFilmResponse {
 export interface GetFilmsApiResponse {
   films?: Film[];
 }
+
+export interface UpdateFilmResponse {
+  success: boolean;
+}
