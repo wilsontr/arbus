@@ -2,14 +2,11 @@ import { useFormik } from "formik";
 import { UseFilmFormProps, filmValidationSchema } from "./useFilmForm.model";
 import { useMemo } from "react";
 import { Grid, TextField } from "@mui/material";
+import { getInitialFilmValues } from "./useFilmForm.utils";
 
 export const useFilmForm = ({ initialValues, onSubmit }: UseFilmFormProps) => {
   const initialFormikValues = useMemo(
-    () => ({
-      name: initialValues?.name || "",
-      speed: !!initialValues?.speed ? `${initialValues.speed}` : "",
-      format: initialValues?.format || "",
-    }),
+    () => getInitialFilmValues(initialValues),
     [initialValues],
   );
 
@@ -18,6 +15,7 @@ export const useFilmForm = ({ initialValues, onSubmit }: UseFilmFormProps) => {
     validationSchema: filmValidationSchema,
     onSubmit: values =>
       onSubmit({
+        id: parseInt(values.id),
         name: values.name,
         speed: parseInt(values.speed),
         format: values.format,

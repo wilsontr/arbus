@@ -30,6 +30,7 @@ def create_tables():
             dev_time VARCHAR NOT NULL,
             water_temp INTEGER DEFAULT 20,
             fresh_fixer BOOLEAN DEFAULT false,
+            exposure_index INTEGER,
             film_id INTEGER,
             developer_id INTEGER,
             FOREIGN KEY (film_id)

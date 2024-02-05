@@ -48,7 +48,7 @@ def insert_film():
 
 
 @films.route('/api/film/<int:film_id>', methods=['PUT'])
-def update_film(film_id):
+def update_film(film_id: int):
     if request.is_json:
         """update a film in the films table"""
         data = request.json
@@ -71,6 +71,27 @@ def update_film(film_id):
         finally:
             if conn is not None:
                 conn.close();
+
+
+@films.route('/api/film/<int:film_id>', methods=['DELETE'])
+def delete_film(film_id: int):
+    """delete a film from the films table"""
+    sql = """DELETE FROM films WHERE id = %s;"""
+    conn = None
+    try: 
+        params = config()
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()
+        cur.execute(sql, [film_id])
+        conn.commit()
+        cur.close()
+        return { "success": True }
+    except (Exception, psycopg2.DatabaseError) as error:
+        app.logger.exception(Exception)
+        abort(500)
+    finally:
+        if conn is not None:
+            conn.close();
 
 
 @films.route('/api/films', methods=['GET'])

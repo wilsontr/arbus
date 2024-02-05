@@ -1,43 +1,107 @@
 import { DataGrid, GridRowParams } from "@mui/x-data-grid";
 import { Film, filmsApi } from "@arbus/rtk-api";
-import { clickNoSelectionStyle, filmsColumns } from "./Films.model";
-import { Button, Grid } from "@mui/material";
+import { filmsColumns } from "./Films.model";
+import { Button, Grid, Snackbar } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { useCallback, useEffect, useState } from "react";
-import { AddFilmForm } from "./addFilmForm";
+import { AddFilmDialog } from "./addFilmDialog";
+import { EditFilmDialog } from "./editFilmDialog";
+import {
+  SNACKBAR_AUTO_HIDE_DURATION,
+  clickNoSelectionStyle,
+} from "../../utils/constants";
 
-const { useGetFilmsQuery, useAddFilmMutation } = filmsApi;
+const {
+  useGetFilmsQuery,
+  useAddFilmMutation,
+  useUpdateFilmMutation,
+  useDeleteFilmMutation,
+} = filmsApi;
 
 export const Films = () => {
-  const [showingAddFilmForm, setShowingAddFilmForm] = useState(false);
+  const [showingAddFilmDialog, setShowingAddFilmDialog] = useState(false);
+  const [showingEditFilmDialog, setShowingEditFilmDialog] = useState(false);
+  const [addConfirmSnackbarVisible, setAddConfirmSnackbarVisible] =
+    useState(false);
+  const [updateConfirmSnackbarVisible, setUpdateConfirmSnackbarVisible] =
+    useState(false);
+  const [deleteConfirmSnackbarVisible, setDeleteConfirmSnackbarVisible] =
+    useState(false);
+  const [editingFilm, setEditingFilm] = useState<Film | undefined>();
   const { data, isFetching: isFilmsFetching } = useGetFilmsQuery();
   const [
     addFilm,
     { isLoading: isAddFilmLoading, isSuccess: isAddFilmSuccess },
   ] = useAddFilmMutation();
+  const [
+    updateFilm,
+    { isLoading: isUpdateFilmLoading, isSuccess: isUpdateFilmSuccess },
+  ] = useUpdateFilmMutation();
+  const [deleteFilm, { isSuccess: isDeleteFilmSuccess }] =
+    useDeleteFilmMutation();
 
   const handleAddButtonClick = useCallback(() => {
-    setShowingAddFilmForm(true);
-  }, [setShowingAddFilmForm]);
+    setShowingAddFilmDialog(true);
+  }, [setShowingAddFilmDialog]);
 
-  const handleAddFilmFormSubmit = useCallback(
+  const handleAddFilmSubmit = useCallback(
     (film: Film) => {
       addFilm(film);
     },
     [addFilm],
   );
 
-  const handleAddFilmFormCancel = useCallback(() => {
-    setShowingAddFilmForm(false);
-  }, [setShowingAddFilmForm]);
-
-  const handleRowClick = useCallback((params: GridRowParams) => {
-    console.log("click", params);
-  }, []);
+  const handleAddFilmCancel = useCallback(() => {
+    setShowingAddFilmDialog(false);
+  }, [setShowingAddFilmDialog]);
 
   useEffect(() => {
-    setShowingAddFilmForm(false);
+    if (isAddFilmSuccess) {
+      setShowingAddFilmDialog(false);
+      setAddConfirmSnackbarVisible(true);
+    }
   }, [isAddFilmSuccess]);
+
+  const handleRowClick = useCallback(
+    (params: GridRowParams<Film>) => {
+      const { row } = params;
+      setEditingFilm(row);
+      setShowingEditFilmDialog(true);
+    },
+    [setEditingFilm, setShowingEditFilmDialog],
+  );
+
+  const handleEditFilmCancel = useCallback(() => {
+    setShowingEditFilmDialog(false);
+  }, [setShowingEditFilmDialog]);
+
+  const handleEditFilmSubmit = useCallback(
+    (film: Film) => {
+      updateFilm({ ...film });
+    },
+    [updateFilm],
+  );
+
+  useEffect(() => {
+    if (isUpdateFilmSuccess) {
+      setShowingEditFilmDialog(false);
+      setUpdateConfirmSnackbarVisible(true);
+    }
+  }, [isUpdateFilmSuccess]);
+
+  const handleDeleteFilm = useCallback(
+    (filmId: number) => {
+      deleteFilm(filmId);
+    },
+    [deleteFilm],
+  );
+
+  useEffect(() => {
+    if (isDeleteFilmSuccess) {
+      setShowingEditFilmDialog(false);
+      setDeleteConfirmSnackbarVisible(true);
+    }
+  }, [isDeleteFilmSuccess]);
 
   return (
     <>
@@ -50,31 +114,54 @@ export const Films = () => {
         onRowClick={handleRowClick}
         sx={clickNoSelectionStyle}
       />
-      {!showingAddFilmForm && (
-        <Grid
-          container
-          justifyContent="flex-end"
-          alignItems="flex-end"
-          flexDirection="row"
-          marginTop={1}
+      <Grid
+        container
+        justifyContent="flex-end"
+        alignItems="flex-end"
+        flexDirection="row"
+        marginTop={1}
+      >
+        <Button
+          variant="contained"
+          startIcon={<Add />}
+          onClick={handleAddButtonClick}
+          fullWidth
         >
-          <Button
-            variant="contained"
-            startIcon={<Add />}
-            onClick={handleAddButtonClick}
-            fullWidth
-          >
-            Add new film
-          </Button>
-        </Grid>
-      )}
-      {showingAddFilmForm && (
-        <AddFilmForm
-          onSubmit={handleAddFilmFormSubmit}
-          onCancel={handleAddFilmFormCancel}
-          isButtonLoading={isAddFilmLoading}
-        />
-      )}
+          Add new film
+        </Button>
+      </Grid>
+      <AddFilmDialog
+        onSubmit={handleAddFilmSubmit}
+        onCancel={handleAddFilmCancel}
+        isButtonLoading={isAddFilmLoading}
+        open={showingAddFilmDialog}
+      />
+      <EditFilmDialog
+        onSubmit={handleEditFilmSubmit}
+        onCancel={handleEditFilmCancel}
+        onDelete={handleDeleteFilm}
+        isButtonLoading={isUpdateFilmLoading}
+        open={showingEditFilmDialog}
+        film={editingFilm}
+      />
+      <Snackbar
+        open={addConfirmSnackbarVisible}
+        message="Film added."
+        autoHideDuration={SNACKBAR_AUTO_HIDE_DURATION}
+        onClose={() => setAddConfirmSnackbarVisible(false)}
+      />
+      <Snackbar
+        open={updateConfirmSnackbarVisible}
+        message="Film updated."
+        autoHideDuration={SNACKBAR_AUTO_HIDE_DURATION}
+        onClose={() => setUpdateConfirmSnackbarVisible(false)}
+      />
+      <Snackbar
+        open={deleteConfirmSnackbarVisible}
+        message="Film deleted."
+        autoHideDuration={SNACKBAR_AUTO_HIDE_DURATION}
+        onClose={() => setDeleteConfirmSnackbarVisible(false)}
+      />
     </>
   );
 };

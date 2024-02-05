@@ -1,7 +1,7 @@
 import { Film } from "../../types/film"
 import { emptySplitApi } from "../emptySplitApi"
 import { Tags } from "../tags"
-import { AddFilmResponse, GetFilmsApiResponse, UpdateFilmResponse } from "./films.model"
+import { AddFilmResponse, DeleteFilmResponse, GetFilmsApiResponse, UpdateFilmResponse } from "./films.model"
 
 export const filmsApi = emptySplitApi.injectEndpoints({
   endpoints: build => ({
@@ -24,7 +24,14 @@ export const filmsApi = emptySplitApi.injectEndpoints({
       },
       invalidatesTags: [Tags.Films],
     }),
-    getFilms: build.query<GetFilmsApiResponse| undefined, void>({
+    deleteFilm: build.mutation<DeleteFilmResponse, number>({
+      query: (filmId) => ({
+        url: `/api/film/${filmId}`,
+        method: "DELETE",        
+      }),
+      invalidatesTags: [Tags.Films],
+    }),
+    getFilms: build.query<GetFilmsApiResponse | undefined, void>({
       query: () => ({
         url: "/api/films",
         method: "GET"

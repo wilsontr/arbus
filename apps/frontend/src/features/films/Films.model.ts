@@ -23,13 +23,3 @@ export const filmsColumns: GridColDef[] = [
   },
 ];
 
-export const clickNoSelectionStyle = {
-  // disable cell selection style
-  ".MuiDataGrid-cell:focus": {
-    outline: "none",
-  },
-  // pointer cursor on ALL rows
-  "& .MuiDataGrid-row:hover": {
-    cursor: "pointer",
-  },
-};
