@@ -1,7 +1,7 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit"
 import { combineSlices, configureStore } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query"
-import { emptySplitApi, filmsApi } from "@arbus/rtk-api"
+import { emptySplitApi } from "@arbus/rtk-api"
 
 
 // `combineSlices` automatically combines the reducers using
