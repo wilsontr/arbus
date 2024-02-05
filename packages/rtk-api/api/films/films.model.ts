@@ -5,7 +5,7 @@ export interface BaseFilmResponse {
 }
 
 export interface AddFilmResponse extends BaseFilmResponse {
-  id: number;
+
 }
 
 export interface GetFilmsApiResponse {

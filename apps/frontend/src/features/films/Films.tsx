@@ -6,6 +6,7 @@ import { Add } from "@mui/icons-material";
 import { useCallback, useEffect, useState } from "react";
 import { AddFilmDialog } from "./addFilmDialog";
 import { EditFilmDialog } from "./editFilmDialog";
+import omit from "lodash/omit";
 import {
   SNACKBAR_AUTO_HIDE_DURATION,
   clickNoSelectionStyle,
@@ -46,7 +47,7 @@ export const Films = () => {
 
   const handleAddFilmSubmit = useCallback(
     (film: Film) => {
-      addFilm(film);
+      addFilm(omit(film, "id"));
     },
     [addFilm],
   );

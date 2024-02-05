@@ -7,7 +7,7 @@ export const filmsApi = emptySplitApi.injectEndpoints({
   endpoints: build => ({
     addFilm: build.mutation<AddFilmResponse, Film>({
       query: (body) => ({
-        url: "/api/film",
+        url: "/api/films",
         method: "POST",
         body,
       }),
@@ -17,7 +17,7 @@ export const filmsApi = emptySplitApi.injectEndpoints({
       query: (film) => {
         const { id } = film;
         return ({
-          url: `/api/film/${id}`,
+          url: `/api/films/${id}`,
           method: "PUT",
           body: film,
         })
@@ -26,7 +26,7 @@ export const filmsApi = emptySplitApi.injectEndpoints({
     }),
     deleteFilm: build.mutation<DeleteFilmResponse, number>({
       query: (filmId) => ({
-        url: `/api/film/${filmId}`,
+        url: `/api/films/${filmId}`,
         method: "DELETE",        
       }),
       invalidatesTags: [Tags.Films],
