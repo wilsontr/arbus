@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Button,
   Dialog,
@@ -10,6 +10,7 @@ import { LoadingButton } from "@mui/lab";
 import { useFilmForm } from "../filmForm/useFilmForm";
 import { EditFilmDialogProps } from "./EditFilmDialog.model";
 import { getInitialFilmValues } from "../filmForm/useFilmForm.utils";
+import { ConfirmDialog } from "components";
 
 export const EditFilmDialog = ({
   film,
@@ -20,6 +21,7 @@ export const EditFilmDialog = ({
   open,
 }: EditFilmDialogProps) => {
   const { formik, fields } = useFilmForm({ initialValues: film, onSubmit });
+  const [deleteConfirmDialogOpen, setDeleteConfirmDialogOpen] = useState(false);
 
   useEffect(() => {
     formik.setValues(getInitialFilmValues(film));
@@ -28,9 +30,18 @@ export const EditFilmDialog = ({
   useEffect(() => {}, [open]);
 
   const handleDeleteButtonClick = useCallback(() => {
+    setDeleteConfirmDialogOpen(true);
+  }, [setDeleteConfirmDialogOpen]);
+
+  const handleDeleteFilmCancel = useCallback(() => {
+    setDeleteConfirmDialogOpen(false);
+  }, [setDeleteConfirmDialogOpen]);
+
+  const handleDeleteFilmConfirm = useCallback(() => {
     const id = parseInt(formik.values.id);
     onDelete(id);
-  }, [onDelete]);
+    setDeleteConfirmDialogOpen(false);
+  }, [formik, onDelete, setDeleteConfirmDialogOpen]);
 
   return (
     <Dialog open={open} onClose={onCancel}>
@@ -81,6 +92,13 @@ export const EditFilmDialog = ({
           </Grid>
         </form>
       </DialogContent>
+      <ConfirmDialog
+        title="Delete film"
+        message="Are you sure you want to delete this film?"
+        onCancel={handleDeleteFilmCancel}
+        onConfirm={handleDeleteFilmConfirm}
+        open={deleteConfirmDialogOpen}
+      />
     </Dialog>
   );
 };
