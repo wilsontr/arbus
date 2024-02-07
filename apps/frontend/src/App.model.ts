@@ -1,3 +1,4 @@
 export enum AppTab {
-  Films = 'films'
+  Films = 'films',
+  Developers = 'developers'
 };

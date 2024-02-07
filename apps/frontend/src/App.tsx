@@ -5,9 +5,10 @@ import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Box, Tab } from "@mui/material";
 import { AppTab } from "./App.model";
 import { Films } from "./features/films";
+import { Developers } from "./features/developers";
 
 const App = () => {
-  const [currentTab, setCurrentTab] = useState<AppTab>(AppTab.Films);
+  const [currentTab, setCurrentTab] = useState<AppTab>(AppTab.Developers);
   const handleTabChange = useCallback(
     (event: SyntheticEvent, newValue: AppTab) => {
       setCurrentTab(newValue);
@@ -21,10 +22,14 @@ const App = () => {
           <Box>
             <TabList onChange={handleTabChange}>
               <Tab label="Films" value={AppTab.Films} />
+              <Tab label="Developers" value={AppTab.Developers} />
             </TabList>
           </Box>
           <TabPanel value={AppTab.Films}>
             <Films />
+          </TabPanel>
+          <TabPanel value={AppTab.Developers}>
+            <Developers />
           </TabPanel>
         </TabContext>
       </header>
