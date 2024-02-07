@@ -17,7 +17,7 @@ def create_tables():
         """ 
         CREATE TABLE developers (
             id SERIAL PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
+            name VARCHAR(100) NOT NULL,
             bottle_size_ml INTEGER
         )
         """,

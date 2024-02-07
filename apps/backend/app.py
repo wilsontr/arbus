@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
 from api.database import db
 from api.resources.films_resource import FilmsResource, FILMS_ENDPOINT
+from api.resources.developers_resource import DevelopersResource, DEVELOPERS_ENDPOINT
 
 def create_app():
     app = Flask(__name__)
@@ -12,11 +13,9 @@ def create_app():
     with app.app_context():
         db.create_all()
 
-    # from api.films import films
-    # app.register_blueprint(films)
-
     api = Api(app)
     api.add_resource(FilmsResource, FILMS_ENDPOINT, f"{FILMS_ENDPOINT}/<id>")
+    api.add_resource(DevelopersResource, DEVELOPERS_ENDPOINT, f"{DEVELOPERS_ENDPOINT}/<id>")
 
     @app.route('/')
     def index():
