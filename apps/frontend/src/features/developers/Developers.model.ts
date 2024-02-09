@@ -10,7 +10,7 @@ export const developersColumns: GridColDef[] = [
   {
     headerName: "Bottle size (ml)",
     type: "number",
-    field: "speed",
+    field: "bottleSizeMl",
     width: 125,
   },
 ];
